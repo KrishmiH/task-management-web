@@ -105,3 +105,38 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: 'Server error during login' });
   }
 };
+
+// POST /auth/forgot-password
+exports.forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ message: "User not found" });
+
+  // Generate OTP code
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+  user.otp = otp;
+  user.otpExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
+  await user.save();
+
+  // Send OTP email
+  await sendOTPEmail(email, otp);
+
+  res.json({ message: "OTP sent to your email." });
+};
+
+// POST /auth/reset-password
+exports.resetPassword = async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ message: "User not found" });
+
+  if (user.otp !== otp || user.otpExpires < Date.now())
+    return res.status(400).json({ message: "Invalid or expired OTP" });
+
+  user.password = await bcrypt.hash(newPassword, 10);
+  user.otp = undefined;
+  user.otpExpires = undefined;
+  await user.save();
+
+  res.json({ message: "Password reset successfully." });
+};

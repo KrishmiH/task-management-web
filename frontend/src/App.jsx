@@ -9,7 +9,8 @@ import AddEditTask from "./pages/AddEditTask";
 import TaskDetails from "./pages/TaskDetails";
 import UserProfile from "./pages/UserProfile";
 import AdminUserManagement from "./pages/AdminUserManagement";
-// import NotFoundPage from "./pages/NotFoundPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import ForgotPasswordPage from "./pages/ForgotPassword";
 
 function App() {
   return (
@@ -24,7 +25,8 @@ function App() {
         <Route path="/tasks/:id" element={<TaskDetails />} />
         <Route path="/profile" element={<UserProfile />} />
         <Route path="/admin/users" element={<AdminUserManagement />} />
-        {/* <Route path="*" element={<NotFoundPage />} /> */}
+        <Route path="*" element={<NotFoundPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
       </Routes>
     </Router>
   );
