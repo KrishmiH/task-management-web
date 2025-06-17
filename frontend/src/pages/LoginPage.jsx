@@ -131,6 +131,12 @@ export default function LoginPage() {
         <GoogleLogin onSuccess={onGoogleSuccess} onError={onGoogleFailure} />
       </div>
 
+      <p className="mt-4 text-center">
+        <Link to="/forgot-password" className="text-blue-600 hover:underline">
+          Forgot Password?
+        </Link>
+      </p>
+
       <p className="mt-6 text-center text-gray-700">
         Don't have an account?{" "}
         <Link to="/register" className="text-blue-600 hover:underline">
